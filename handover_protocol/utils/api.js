@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 'use strict';
+const DASHBOT_API_KEY = process.env.DASHBOT_API_KEY;
+const dashbot = require('dashbot')(DASHBOT_API_KEY).facebook;
 const env = require('../env'),
       request = require('request');
 
@@ -20,14 +22,16 @@ function call (path, payload, callback) {
     return;
   }
 
-  request({
+  const requestData = {
     uri: graph_url + path,
     qs: {'access_token': access_token},
     method: 'POST',
     json: payload,
-  }, (error, response, body) => {
+  }
+  request(requestData, (error, response, body) => {
     console.log(body)
     if (!error && response.statusCode === 200) {
+      dashbot.logOutgoing(requestData, body)
       console.log('Message sent succesfully');
     } else {
       console.error('Error: ' + error);        

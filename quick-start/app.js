@@ -21,7 +21,13 @@
  */
 
 'use strict';
+require('dotenv').config({path:'../.env'});
+
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const DASHBOT_API_KEY = process.env.DASHBOT_API_KEY;
+const dashbot = require('dashbot')(DASHBOT_API_KEY).facebook;
+
+
 // Imports dependencies and set up http server
 const 
   request = require('request'),
@@ -33,7 +39,8 @@ const
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
 // Accepts POST requests at /webhook endpoint
-app.post('/webhook', (req, res) => {  
+app.post('/webhook', (req, res) => {
+  dashbot.logIncoming(req.body);
 
   // Parse the request body from the POST
   let body = req.body;
@@ -170,13 +177,15 @@ function callSendAPI(sender_psid, response) {
   }
 
   // Send the HTTP request to the Messenger Platform
-  request({
+  const requestData = {
     "uri": "https://graph.facebook.com/v2.6/me/messages",
     "qs": { "access_token": PAGE_ACCESS_TOKEN },
     "method": "POST",
     "json": request_body
-  }, (err, res, body) => {
+  }
+  request(requestData, (err, res, body) => {
     if (!err) {
+      dashbot.logOutgoing(requestData, body);
       console.log('message sent!')
     } else {
       console.error("Unable to send message:" + err);

@@ -11,6 +11,12 @@ It contains the following functionality:
 
 Follow the [walk-through](https://developers.facebook.com/docs/messenger-platform/quickstart) to learn about this project in more detail.
 
+This example has been modified to include dashbot integration. Before using the sample you should:
+
+1. Create an account on [https://www.dashbot.io](https://www.dashbot.io)
+1. Create a facebook bot on dashbot.io (make note of the API_KEY)
+1. Set your environment variable DASHBOT_API_KEY to the API_KEY obtained above.
+
 ## Setup
 
 Set the values in `config/default.json` before running the sample. Descriptions of each parameter can be found in `app.js`. Alternatively, you can set the corresponding environment variables as defined in `app.js`.

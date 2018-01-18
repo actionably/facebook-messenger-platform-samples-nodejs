@@ -2,6 +2,12 @@
 
 This app is a basic demo of using the Messenger Platform's handover protocol.
 
+This example has been modified to include dashbot integration. Before using the sample you should:
+
+1. Create an account on [https://www.dashbot.io](https://www.dashbot.io)
+1. Create a facebook bot on dashbot.io (make note of the API_KEY)
+1. Set your environment variable DASHBOT_API_KEY to the API_KEY obtained above.
+
 ## Requirements
 
 To run this app you will need the following:

@@ -8,3 +8,6 @@ node_modules
 Procfile
 .gitignore
 .DS_Store
+.idea
+.env
+env

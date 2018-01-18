@@ -1,6 +1,13 @@
 <h1 align="center">🔥 Welcome Brave Developer! 🔥</h1>
   
-This repo contains sample applications that will help you learn to build awesome experiences on the Messenger Platform. 
+This repo contains sample applications that will help you learn to build awesome experiences on the Messenger Platform.
+
+These examples have all been modified to include dashbot integration. Before using the samples you should:
+
+1. Create an account on [https://www.dashbot.io](https://www.dashbot.io)
+1. Create a facebook bot on dashbot.io (make note of the API_KEY)
+1. Set your environment variable DASHBOT_API_KEY to the API_KEY obtained above.
+ 
 
 ### New to the Platform?
 

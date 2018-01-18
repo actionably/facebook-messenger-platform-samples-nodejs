@@ -9,6 +9,7 @@
 
 /* jshint node: true, devel: true */
 'use strict';
+require('dotenv').config({path:'../.env'});
 
 const 
   bodyParser = require('body-parser'),
@@ -51,10 +52,15 @@ const SERVER_URL = (process.env.SERVER_URL) ?
   (process.env.SERVER_URL) :
   config.get('serverURL');
 
+const DASHBOT_API_KEY = process.env.DASHBOT_API_KEY || config.get('dashbotApiKey');
+const dashbot = require('dashbot')(DASHBOT_API_KEY).facebook;
+
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
   console.error("Missing config values");
   process.exit(1);
 }
+
+
 
 /*
  * Use your own validation token. Check that the token used in the Webhook 
@@ -82,7 +88,7 @@ app.get('/webhook', function(req, res) {
  */
 app.post('/webhook', function (req, res) {
   var data = req.body;
-
+  dashbot.logIncoming(data)
   // Make sure this is a page subscription
   if (data.object == 'page') {
     // Iterate over each entry
@@ -803,14 +809,15 @@ function sendAccountLinking(recipientId) {
  *
  */
 function callSendAPI(messageData) {
-  request({
+  const requestData = {
     uri: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: { access_token: PAGE_ACCESS_TOKEN },
+    qs: {access_token: PAGE_ACCESS_TOKEN},
     method: 'POST',
     json: messageData
-
-  }, function (error, response, body) {
+  }
+  request(requestData, function (error, response, body) {
     if (!error && response.statusCode == 200) {
+      dashbot.logOutgoing(requestData, body)
       var recipientId = body.recipient_id;
       var messageId = body.message_id;
 

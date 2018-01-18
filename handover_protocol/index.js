@@ -5,6 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 'use strict';
+require('dotenv').config({path:'../.env'});
+
+const DASHBOT_API_KEY = process.env.DASHBOT_API_KEY;
+const dashbot = require('dashbot')(DASHBOT_API_KEY).facebook;
 
 // import dependencies
 const bodyParser = require('body-parser'),
@@ -30,7 +34,7 @@ app.get('/webhook', (req, res) => {
 
 // webhook
 app.post('/webhook', (req, res) => {
-
+  dashbot.logIncoming(req.body)
   // parse messaging array
   const webhook_events = req.body.entry[0];
 
